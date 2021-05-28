@@ -1,0 +1,6 @@
+com\whc\rpc\api\Blog.class
+com\whc\rpc\api\BlogService.class
+com\whc\rpc\api\User$UserBuilder.class
+com\whc\rpc\api\Blog$BlogBuilder.class
+com\whc\rpc\api\User.class
+com\whc\rpc\api\UserService.class
