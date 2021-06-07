@@ -1,4 +1,4 @@
-package com.whc.rpc.client;
+package com.whc.rpc;
 
 import com.whc.rpc.entity.RpcRequest;
 import org.slf4j.Logger;
@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.UUID;
 
 /**
  * RPC客户端代理类
@@ -18,12 +19,11 @@ import java.lang.reflect.Proxy;
 public class RpcClientProxy implements InvocationHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(RpcClientProxy.class);
-	private String host;
-	private int port;
 
-	public RpcClientProxy(String host, int port) {
-		this.host = host;
-		this.port = port;
+	private final RpcClient client;
+
+	public RpcClientProxy(RpcClient client) {
+		this.client = client;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,12 +36,12 @@ public class RpcClientProxy implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		logger.info("调用方法: {}#{}", method.getDeclaringClass().getName(), method.getName());
 		RpcRequest rpcRequest = RpcRequest.builder()
+				.requestId(UUID.randomUUID().toString())
 				.interfaceName(method.getDeclaringClass().getName())
 				.methodName(method.getName())
 				.parameters(args)
 				.paramTypes(method.getParameterTypes())
 				.build();
-		RpcClient rpcClient = new RpcClient();
-		return rpcClient.sendRequest(rpcRequest, host, port);
+		return client.sendRequest(rpcRequest);
 	}
 }

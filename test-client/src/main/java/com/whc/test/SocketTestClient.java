@@ -1,20 +1,23 @@
 package com.whc.test;
 
 import com.whc.rpc.api.*;
-import com.whc.rpc.client.RpcClientProxy;
-
-import java.util.Random;
+import com.whc.rpc.RpcClientProxy;
+import com.whc.rpc.serializer.HessianSerializer;
+import com.whc.rpc.serializer.KryoSerializer;
+import com.whc.rpc.socket.client.SocketClient;
 
 /**
  * 测试用消费者（客户端）
- * @ClassName: TestClient
+ * @ClassName: SocketTestClient
  * @Author: whc
  * @Date: 2021/05/24/20:47
  */
-public class TestClient {
+public class SocketTestClient {
 
 	public static void main(String[] args) {
-		RpcClientProxy proxy = new RpcClientProxy("127.0.0.1", 9000);
+		SocketClient client = new SocketClient("127.0.0.1", 9000);
+		client.setSerializer(new HessianSerializer());
+		RpcClientProxy proxy = new RpcClientProxy(client);
 		// 不同的service需要进行不同的封装,客户端只知道service接口,需要一层动态代理根据反射封装不同的Service
 		UserService userService = proxy.getProxy(UserService.class);
 		// 服务方法1
