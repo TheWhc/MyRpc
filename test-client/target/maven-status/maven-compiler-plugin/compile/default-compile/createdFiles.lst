@@ -1,1 +1,2 @@
-com\whc\test\TestClient.class
+com\whc\test\SocketTestClient.class
+com\whc\test\NettyTestClient.class

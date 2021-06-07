@@ -14,6 +14,12 @@ import java.io.Serializable;
 @Data
 @Builder
 public class RpcRequest implements Serializable {
+
+	/**
+	 * 请求号
+	 */
+	private String requestId;
+
 	/**
 	 * 待调用接口名称
 	 */
@@ -33,4 +39,5 @@ public class RpcRequest implements Serializable {
 	 * 调用方法的参数类型
 	 */
 	private Class<?>[] paramTypes;
+
 }
