@@ -1,11 +1,15 @@
-package com.whc.rpc.netty.server;
+package com.whc.rpc.transport.netty.server;
 
-import com.whc.rpc.RpcServer;
+import com.whc.rpc.transport.RpcServer;
 import com.whc.rpc.codec.CommonDecoder;
 import com.whc.rpc.codec.CommonEncoder;
 import com.whc.rpc.codec.Spliter;
 import com.whc.rpc.enumeration.RpcError;
 import com.whc.rpc.exception.RpcException;
+import com.whc.rpc.provider.ServiceProvider;
+import com.whc.rpc.provider.ServiceProviderImpl;
+import com.whc.rpc.registry.ServiceRegistry;
+import com.whc.rpc.registry.ZkServiceRegistry;
 import com.whc.rpc.serializer.CommonSerializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -17,6 +21,8 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
+
 /**
  * NIO方式服务提供者
  * @ClassName: NettyServer
@@ -27,15 +33,48 @@ public class NettyServer implements RpcServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
+	private final String host;
+	private final int port;
+
+	private final ServiceRegistry serviceRegistry;
+	private final ServiceProvider serviceProvider;
+
 	private CommonSerializer serializer;
 
+	public NettyServer(String host, int port) {
+		this(host, port, DEFAULT_SERIALIZER);
+	}
+
+	public NettyServer(String host, int port, Integer serializer) {
+		// 需要传入服务端自身的服务的网络地址
+		this.host = host;
+		this.port = port;
+
+		serviceRegistry = new ZkServiceRegistry();
+		serviceProvider = new ServiceProviderImpl();
+		this.serializer = CommonSerializer.getByCode(serializer);
+	}
+
+	/**
+	 *
+	 * @param service UserServiceImpl
+	 * @param serviceClass UserService.Class
+	 * @param <T>
+	 */
 	@Override
-	public void start(int port) {
+	public <T> void publishService(T service, Class<T> serviceClass) {
 		if(serializer == null) {
 			logger.error("未设置序列化器");
 			throw new RpcException(RpcError.SERIALIZER_NOT_FOUND);
 		}
+		// UserServiceImpl,UserService.Class
+		serviceProvider.addServiceProvider(service, serviceClass);
+		// com.whc.test.UserService,127.0.0.1:9000
+		serviceRegistry.register(serviceClass.getCanonicalName(), new InetSocketAddress(host, port));
+	}
 
+	@Override
+	public void start() {
 		// bossGroup 表示监听端口,accept新的连接请求
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		// workerGroup表示处理每一条连接的数据读写的线程组
@@ -92,11 +131,6 @@ public class NettyServer implements RpcServer {
 			bossGroup.shutdownGracefully();
 			workerGroup.shutdownGracefully();
 		}
-	}
-
-	@Override
-	public void setSerializer(CommonSerializer serializer) {
-		this.serializer = serializer;
 	}
 
 }

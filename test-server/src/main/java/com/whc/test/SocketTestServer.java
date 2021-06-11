@@ -2,10 +2,11 @@ package com.whc.test;
 
 import com.whc.rpc.api.BlogService;
 import com.whc.rpc.api.UserService;
-import com.whc.rpc.registry.DefaultServiceRegistry;
-import com.whc.rpc.registry.ServiceRegistry;
+import com.whc.rpc.provider.ServiceProviderImpl;
+import com.whc.rpc.provider.ServiceProvider;
+import com.whc.rpc.serializer.CommonSerializer;
 import com.whc.rpc.serializer.HessianSerializer;
-import com.whc.rpc.socket.server.SocketServer;
+import com.whc.rpc.transport.socket.server.SocketServer;
 
 
 /**
@@ -19,12 +20,10 @@ public class SocketTestServer {
 	public static void main(String[] args) {
 		UserService userService = new UserServiceImpl();
 		BlogService blogService = new BlogServiceImpl();
-		ServiceRegistry serviceRegistry = new DefaultServiceRegistry();
-		serviceRegistry.register(userService);
-		serviceRegistry.register(blogService);
-		SocketServer socketServer = new SocketServer(serviceRegistry);
-		socketServer.setSerializer(new HessianSerializer());
-		socketServer.start(9000);
+		// 服务端需要把自己的ip，端口给注册中心
+		SocketServer socketServer = new SocketServer("127.0.0.1", 9001, CommonSerializer.HESSIAN_SERIALIZER);
+		socketServer.publishService(userService, UserService.class);
+		socketServer.publishService(blogService, BlogService.class);
 	}
 
 }

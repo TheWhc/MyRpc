@@ -1,4 +1,4 @@
-package com.whc.rpc.socket.util;
+package com.whc.rpc.transport.socket.util;
 
 import com.whc.rpc.entity.RpcRequest;
 import com.whc.rpc.enumeration.PackageType;

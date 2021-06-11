@@ -3,7 +3,9 @@ D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\entity\RpcRequest
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\exception\SerializeException.java
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\enumeration\PackageType.java
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\util\RpcMessageChecker.java
+D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\factory\SingletonFactory.java
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\enumeration\ResponseCode.java
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\entity\RpcResponse.java
+D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\factory\ThreadPoolFactory.java
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\enumeration\SerializerCode.java
 D:\project\MyRPCFramework\rpc-common\src\main\java\com\whc\rpc\exception\RpcException.java

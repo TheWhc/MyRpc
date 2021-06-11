@@ -3,8 +3,10 @@ com\whc\rpc\util\RpcMessageChecker.class
 com\whc\rpc\enumeration\ResponseCode.class
 com\whc\rpc\entity\RpcRequest$RpcRequestBuilder.class
 com\whc\rpc\entity\RpcResponse.class
+com\whc\rpc\factory\SingletonFactory.class
 com\whc\rpc\enumeration\PackageType.class
 com\whc\rpc\enumeration\SerializerCode.class
 com\whc\rpc\exception\RpcException.class
 com\whc\rpc\exception\SerializeException.class
+com\whc\rpc\factory\ThreadPoolFactory.class
 com\whc\rpc\entity\RpcRequest.class
