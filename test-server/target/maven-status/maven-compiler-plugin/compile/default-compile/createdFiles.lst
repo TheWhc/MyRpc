@@ -2,3 +2,5 @@ com\whc\test\UserServiceImpl.class
 com\whc\test\BlogServiceImpl.class
 com\whc\test\NettyTestServer.class
 com\whc\test\SocketTestServer.class
+com\whc\test\NettyTestServer2.class
+com\whc\test\NettyTestServer3.class

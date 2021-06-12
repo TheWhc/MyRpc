@@ -19,6 +19,7 @@ public class ServiceProviderImpl implements ServiceProvider {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServiceProviderImpl.class);
 
+	// 缓存到本地的server服务
 	private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
 	private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
 

@@ -1,5 +1,6 @@
 package com.whc.test;
 
+import com.whc.rpc.loadbalancer.RoundLoadBalance;
 import com.whc.rpc.transport.RpcClient;
 import com.whc.rpc.transport.RpcClientProxy;
 import com.whc.rpc.api.Blog;
@@ -17,7 +18,11 @@ import com.whc.rpc.serializer.CommonSerializer;
 public class NettyTestClient {
 
 	public static void main(String[] args) {
-		RpcClient client = new NettyClient(CommonSerializer.PROTOBUF_SERIALIZER);
+//		RpcClient client = new NettyClient(CommonSerializer.PROTOBUF_SERIALIZER);
+
+		// 传入轮询负载均衡
+		RpcClient client = new NettyClient(CommonSerializer.PROTOBUF_SERIALIZER, new RoundLoadBalance());
+
 		RpcClientProxy proxy = new RpcClientProxy(client);
 		// 不同的service需要进行不同的封装,客户端只知道service接口,需要一层动态代理根据反射封装不同的Service
 		UserService userService = proxy.getProxy(UserService.class);

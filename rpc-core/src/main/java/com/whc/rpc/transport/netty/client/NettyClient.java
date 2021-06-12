@@ -1,5 +1,7 @@
 package com.whc.rpc.transport.netty.client;
 
+import com.whc.rpc.loadbalancer.LoadBalancer;
+import com.whc.rpc.loadbalancer.RandomLoadBalance;
 import com.whc.rpc.transport.RpcClient;
 import com.whc.rpc.entity.RpcRequest;
 import com.whc.rpc.entity.RpcResponse;
@@ -46,12 +48,21 @@ public class NettyClient implements RpcClient {
 	private final UnprocessedRequests unprocessedRequests;
 
 	public NettyClient() {
-		this(DEFAULT_SERIALIZER);
+		this(DEFAULT_SERIALIZER, new RandomLoadBalance());
+	}
+
+	public NettyClient(LoadBalancer loadBalancer) {
+		this(DEFAULT_SERIALIZER, loadBalancer);
 	}
 
 	public NettyClient(Integer serializer) {
+		this(serializer, new RandomLoadBalance());
+	}
+
+	public NettyClient(Integer serializer, LoadBalancer loadBalancer) {
 		// 初始化注册中心，建立连接
-		this.serviceDiscovery = new ZkServiceRegistry();
+		// 默认负载均衡为随机负载均衡
+		this.serviceDiscovery = new ZkServiceRegistry(loadBalancer);
 		this.serializer = CommonSerializer.getByCode(serializer);
 		this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
 	}

@@ -2,6 +2,8 @@ package com.whc.rpc.registry;
 
 import com.whc.rpc.enumeration.RpcError;
 import com.whc.rpc.exception.RpcException;
+import com.whc.rpc.loadbalancer.LoadBalancer;
+import com.whc.rpc.loadbalancer.RandomLoadBalance;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -28,6 +30,20 @@ public class ZkServiceRegistry implements ServiceRegistry{
 
 	// zookeeper根路径节点
 	private static final String ROOT_PATH = "MyRPC";
+
+	private final LoadBalancer loadBalancer;
+
+	public ZkServiceRegistry() {
+		this(null);
+	}
+
+	public ZkServiceRegistry(LoadBalancer loadBalancer) {
+		if(loadBalancer == null) {
+			this.loadBalancer = new RandomLoadBalance();
+		} else {
+			this.loadBalancer = loadBalancer;
+		}
+	}
 
 	//连接zookeeper
 	{
@@ -85,8 +101,9 @@ public class ZkServiceRegistry implements ServiceRegistry{
 	public InetSocketAddress serviceDiscovery(String serviceName) {
 		try {
 			List<String> strings = client.getChildren().forPath("/" + serviceName);
-			// 这里默认用的第一个,后面加负载均衡
-			String string = strings.get(0);
+			// 负载均衡
+			String string = loadBalancer.balance(strings);
+			logger.info("根据负载均衡策略后, 返回的服务器ip地址为:" + string);
 			return parseAddress(string);
 		} catch (Exception e) {
 			logger.error("获取服务时有错误发生:", e);
