@@ -1,6 +1,7 @@
 com\whc\rpc\provider\ServiceProvider.class
 com\whc\rpc\transport\netty\client\ChannelProvider$1.class
 com\whc\rpc\serializer\ProtobufSerializer.class
+com\whc\rpc\registry\ZkServiceRegistry$1.class
 com\whc\rpc\loadbalancer\RoundLoadBalance.class
 com\whc\rpc\handler\RequestHandler.class
 com\whc\rpc\transport\RpcServer.class

@@ -7,12 +7,16 @@ import com.whc.rpc.loadbalancer.RandomLoadBalance;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +37,8 @@ public class ZkServiceRegistry implements ServiceRegistry{
 
 	private final LoadBalancer loadBalancer;
 
+	private List<String> repos = new ArrayList<>();
+
 	public ZkServiceRegistry() {
 		this(null);
 	}
@@ -51,14 +57,18 @@ public class ZkServiceRegistry implements ServiceRegistry{
 		RetryPolicy policy = new ExponentialBackoffRetry(1000, 3);
 		this.client = CuratorFrameworkFactory
 				.builder()
+				// 服务器列表
 				.connectString("112.74.188.132:2181")
+				// 会话超时时间
 				.sessionTimeoutMs(60 * 1000)
+				// 连接创建超时时间
 				.connectionTimeoutMs(15 * 1000)
 				.retryPolicy(policy)
 				.namespace(ROOT_PATH)
 				.build();
 		this.client.start();
 		logger.info("zookeeper连接成功");
+
 	}
 
 	@Override
@@ -99,16 +109,43 @@ public class ZkServiceRegistry implements ServiceRegistry{
 	// 根据服务名返回地址
 	@Override
 	public InetSocketAddress serviceDiscovery(String serviceName) {
+		String path = "/" + serviceName;
+
 		try {
-			List<String> strings = client.getChildren().forPath("/" + serviceName);
-			// 负载均衡
-			String string = loadBalancer.balance(strings);
+			repos = client.getChildren().forPath(path);
+
+			// 动态发现服务节点的变化(监听), 重新更新服务器列表
+			registerWatcher(path);
+
+			// 负载均衡机制
+			String string = loadBalancer.balance(repos);
 			logger.info("根据负载均衡策略后, 返回的服务器ip地址为:" + string);
 			return parseAddress(string);
 		} catch (Exception e) {
 			logger.error("获取服务时有错误发生:", e);
 		}
 		return null;
+	}
+
+	private void registerWatcher(String path) {
+		// 1. 创建监听对象
+		PathChildrenCache pathChildrenCache = new PathChildrenCache(client, path, true);
+
+		// 2. 绑定监听器
+		pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
+			@Override
+			public void childEvent(CuratorFramework curatorFramework, PathChildrenCacheEvent pathChildrenCacheEvent) throws Exception {
+				logger.info("子节点发生了变化..");
+				repos = curatorFramework.getChildren().forPath(path);
+			}
+		});
+
+		// 3. 开启
+		try {
+			pathChildrenCache.start();
+		} catch (Exception e) {
+			logger.error("注册PathChild Watcher异常:", e);
+		}
 	}
 
 
