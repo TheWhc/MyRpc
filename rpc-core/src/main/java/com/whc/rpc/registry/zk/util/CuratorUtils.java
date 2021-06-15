@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 创建Zk客户端类、创建节点、获取节点、监听节点、清除注册表工具类
+ * 创建Zk客户端类、创建节点、获取节点、监听节点工具类
  * @ClassName: CuratorUtils
  * @Author: whc
  * @Date: 2021/06/13/23:54
@@ -39,7 +39,7 @@ public class CuratorUtils {
 	private static final Set<String> PERSISTENT_REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
 	private static final Set<String> EPHEMERAL_REGISTERED_PATH_SET = ConcurrentHashMap.newKeySet();
 	private static CuratorFramework zkClient;
-	private static final String DEFAULT_ZOOKEEPER_ADDRESS = "112.74.188.132:2181";
+	private static final String DEFAULT_ZOOKEEPER_ADDRESS = "127.0.0.1:2181";
 
 	private CuratorUtils() {}
 

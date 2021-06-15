@@ -29,7 +29,7 @@ public class ZKServiceDiscoveryImpl implements ServiceDiscovery {
 		this(null);
 	}
 
-	public ZKServiceDiscoveryImpl(LoadBalancer loadBalancer) {
+	public  ZKServiceDiscoveryImpl(LoadBalancer loadBalancer) {
 		if(loadBalancer == null) {
 			this.loadBalancer = new RandomLoadBalance();
 		} else {
@@ -40,6 +40,7 @@ public class ZKServiceDiscoveryImpl implements ServiceDiscovery {
 	@Override
 	public InetSocketAddress serviceDiscovery(String serviceName) {
 		CuratorFramework zkClient = CuratorUtils.getZkClient();
+		// 获取服务地址列表
 		List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, serviceName);
 		if (serviceUrlList == null || serviceUrlList.size() == 0) {
 			throw new RpcException(RpcError.SERVICE_NOT_FOUND, serviceName);

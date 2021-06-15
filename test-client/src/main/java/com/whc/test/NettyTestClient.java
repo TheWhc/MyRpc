@@ -18,8 +18,6 @@ import com.whc.rpc.serializer.CommonSerializer;
 public class NettyTestClient {
 
 	public static void main(String[] args) {
-//		RpcClient client = new NettyClient(CommonSerializer.PROTOBUF_SERIALIZER);
-
 		// 传入轮询负载均衡
 		RpcClient client = new NettyClient(CommonSerializer.PROTOBUF_SERIALIZER, new RoundLoadBalance());
 

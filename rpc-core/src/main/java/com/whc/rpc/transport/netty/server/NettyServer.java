@@ -67,7 +67,7 @@ public class NettyServer implements RpcServer {
 			logger.error("未设置序列化器");
 			throw new RpcException(RpcError.SERIALIZER_NOT_FOUND);
 		}
-		// UserServiceImpl,UserService.Class
+		// com.whc.test.UserServiceImpl,UserService.Class
 		serviceProvider.addServiceProvider(service, serviceClass);
 		// com.whc.test.UserService,127.0.0.1:9000
 		serviceRegistry.register(serviceClass.getCanonicalName(), new InetSocketAddress(host, port));

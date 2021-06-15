@@ -17,5 +17,4 @@ public interface ServiceRegistry {
 	 * @param inetSocketAddress 提供服务的地址
 	 */
 	void register(String serviceName, InetSocketAddress inetSocketAddress);
-
 }

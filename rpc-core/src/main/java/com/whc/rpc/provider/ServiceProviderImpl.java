@@ -30,7 +30,7 @@ public class ServiceProviderImpl implements ServiceProvider {
 		registeredService.add(serviceName);
 		// com.whc.test.UserService -> com.whc.test.UserServiceImpl
 		serviceMap.put(serviceName, service);
-		logger.info("向接口: {} 注册服务: {}", service.getClass().getInterfaces(), serviceName);
+		logger.info("向接口: {} 注册服务: {}", service.getClass().getInterfaces(), service);
 	}
 
 	@Override

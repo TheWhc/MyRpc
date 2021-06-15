@@ -16,6 +16,7 @@ public class ZKServiceRegistryImpl implements ServiceRegistry {
 
 	@Override
 	public void register(String serviceName, InetSocketAddress inetSocketAddress) {
+		// /MyRPC/com.whc.test.UserService
 		String servicePersistentPath = CuratorUtils.ZK_REGISTER_ROOT_PATH + "/" + serviceName;
 		String serviceEphemeralPath = servicePersistentPath + inetSocketAddress;
 		CuratorFramework zkClient = CuratorUtils.getZkClient();
