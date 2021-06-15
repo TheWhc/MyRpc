@@ -9,7 +9,6 @@ import com.whc.rpc.factory.ThreadPoolFactory;
 import com.whc.rpc.provider.ServiceProvider;
 import com.whc.rpc.provider.ServiceProviderImpl;
 import com.whc.rpc.registry.ServiceRegistry;
-import com.whc.rpc.registry.ZkServiceRegistry;
 import com.whc.rpc.serializer.CommonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

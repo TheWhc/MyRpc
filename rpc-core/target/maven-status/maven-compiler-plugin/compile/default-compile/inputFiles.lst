@@ -6,7 +6,6 @@ D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\loadbalance\loadbal
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\registry\zk\util\CuratorUtils.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\codec\Spliter.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\transport\netty\client\NettyClient.java
-D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\registry\ZkServiceRegistry.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\serializer\HessianSerializer.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\transport\RpcClient.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\loadbalance\AbstractLoadBalance.java
@@ -30,7 +29,6 @@ D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\transport\netty\cli
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\codec\CommonEncoder.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\registry\zk\ZKServiceDiscoveryImpl.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\registry\zk\ZKServiceRegistryImpl.java
-D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\hook\CustomShutdownHook.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\provider\ServiceProviderImpl.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\transport\socket\server\SocketServer.java
 D:\project\MyRPCFramework\rpc-core\src\main\java\com\whc\rpc\transport\socket\util\ObjectReader.java

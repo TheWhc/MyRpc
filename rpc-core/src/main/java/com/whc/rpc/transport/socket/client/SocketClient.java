@@ -8,8 +8,6 @@ import com.whc.rpc.entity.RpcResponse;
 import com.whc.rpc.enumeration.ResponseCode;
 import com.whc.rpc.enumeration.RpcError;
 import com.whc.rpc.exception.RpcException;
-import com.whc.rpc.registry.ServiceRegistry;
-import com.whc.rpc.registry.ZkServiceRegistry;
 import com.whc.rpc.serializer.CommonSerializer;
 import com.whc.rpc.transport.socket.util.ObjectReader;
 import com.whc.rpc.transport.socket.util.ObjectWriter;

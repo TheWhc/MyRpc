@@ -10,14 +10,12 @@ com\whc\rpc\registry\zk\util\CuratorUtils$1.class
 com\whc\rpc\transport\RpcServer.class
 com\whc\rpc\transport\RpcClient.class
 com\whc\rpc\transport\socket\server\SocketRequestHandlerThread.class
-com\whc\rpc\registry\ZkServiceRegistry.class
 com\whc\rpc\transport\netty\client\ChannelProvider.class
 com\whc\rpc\transport\netty\client\NettyClient.class
 com\whc\rpc\transport\RpcClientProxy.class
 com\whc\rpc\codec\CommonDecoder.class
 com\whc\rpc\transport\socket\client\SocketClient.class
 com\whc\rpc\transport\socket\util\ObjectReader.class
-com\whc\rpc\hook\CustomShutdownHook.class
 com\whc\rpc\registry\zk\ZKServiceRegistryImpl.class
 com\whc\rpc\transport\netty\client\UnprocessedRequests.class
 com\whc\rpc\transport\netty\server\NettyServerHandler.class

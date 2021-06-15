@@ -14,7 +14,6 @@ import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -63,6 +62,8 @@ public class CuratorUtils {
 	}
 
 	// 创建服务地址为临时节点EPHEMERAL
+	// 临时节点，当客户端与 Zookeeper 之间的连接或者 session 断掉时会被zk自动删除。开源 Dubbo 框架，使用的就是临时节点
+	// 优点: 当服务节点下线或者服务节点不可用，Zookeeper 会自动将节点地址信息从注册中心删除
 	public static void createEphemeralNode(CuratorFramework zkClient, String path) {
 		try {
 			// 临时节点已存在
@@ -144,21 +145,5 @@ public class CuratorUtils {
 			e.printStackTrace();
 		}
 		return zkClient;
-	}
-
-	/**
-	 * 注销服务元数据(删除zk服务地址节点)
-	 */
-	public static void clearRegistry(CuratorFramework zkClient, InetSocketAddress inetSocketAddress) {
-		PERSISTENT_REGISTERED_PATH_SET.stream().parallel().forEach(p -> {
-			try {
-				if (p.endsWith(inetSocketAddress.toString())) {
-					zkClient.delete().forPath(p);
-				}
-			} catch (Exception e) {
-				logger.error("清空服务地址 [{}] 失败", p);
-			}
-		});
-		logger.info("注销服务元数据成功:[{}]", PERSISTENT_REGISTERED_PATH_SET.toString());
 	}
 }
