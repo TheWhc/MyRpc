@@ -24,6 +24,8 @@ public class SocketTestServer {
 		SocketServer socketServer = new SocketServer("127.0.0.1", 9001, CommonSerializer.HESSIAN_SERIALIZER);
 		socketServer.publishService(userService, UserService.class);
 		socketServer.publishService(blogService, BlogService.class);
+
+		socketServer.start();
 	}
 
 }

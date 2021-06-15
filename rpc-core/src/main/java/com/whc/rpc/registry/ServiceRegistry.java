@@ -3,9 +3,8 @@ package com.whc.rpc.registry;
 import java.net.InetSocketAddress;
 
 /**
- * 服务注册接口,两大基本功能
- * 1. 注册:保存服务和地址
- * 2. 查询:根据服务名查找地址
+ * 服务注册接口
+ * 注册:保存服务和地址
  * @ClassName: ServiceRegistry
  * @Author: whc
  * @Date: 2021/06/09/22:29
@@ -24,6 +23,6 @@ public interface ServiceRegistry {
 	 * @param serviceName 服务名称
 	 * @return 服务实体
 	 */
-	InetSocketAddress serviceDiscovery(String serviceName);
+//	InetSocketAddress serviceDiscovery(String serviceName);
 
 }

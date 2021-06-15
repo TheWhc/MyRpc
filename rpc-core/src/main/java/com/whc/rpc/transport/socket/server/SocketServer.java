@@ -1,5 +1,6 @@
 package com.whc.rpc.transport.socket.server;
 
+import com.whc.rpc.registry.zk.ZKServiceRegistryImpl;
 import com.whc.rpc.transport.RpcServer;
 import com.whc.rpc.handler.RequestHandler;
 import com.whc.rpc.enumeration.RpcError;
@@ -45,7 +46,7 @@ public class SocketServer implements RpcServer {
 		this.host = host;
 		this.port = port;
 		threadPool = ThreadPoolFactory.createDefaultThreadPool("socket-rpc-server");
-		this.serviceRegistry = new ZkServiceRegistry();
+		this.serviceRegistry = new ZKServiceRegistryImpl();
 		this.serviceProvider = new ServiceProviderImpl();
 		this.serializer = CommonSerializer.getByCode(serializer);
 	}
@@ -58,7 +59,6 @@ public class SocketServer implements RpcServer {
 		}
 		serviceProvider.addServiceProvider(service, serviceClass);
 		serviceRegistry.register(serviceClass.getCanonicalName(), new InetSocketAddress(host, port));
-		start();
 	}
 
 	@Override

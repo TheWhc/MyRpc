@@ -1,4 +1,4 @@
-package com.whc.rpc.loadbalancer;
+package com.whc.rpc.loadbalance;
 
 
 import java.util.List;
@@ -11,5 +11,5 @@ import java.util.List;
  * @Date: 2021/06/12/22:08
  */
 public interface LoadBalancer {
-	String balance(List<String> addressList);
+	String balance(List<String> serviceAddresses);
 }

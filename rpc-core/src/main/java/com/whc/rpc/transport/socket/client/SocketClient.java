@@ -1,5 +1,7 @@
 package com.whc.rpc.transport.socket.client;
 
+import com.whc.rpc.registry.ServiceDiscovery;
+import com.whc.rpc.registry.zk.ZKServiceDiscoveryImpl;
 import com.whc.rpc.transport.RpcClient;
 import com.whc.rpc.entity.RpcRequest;
 import com.whc.rpc.entity.RpcResponse;
@@ -29,12 +31,12 @@ public class SocketClient implements RpcClient {
 
 	private static final Logger logger = LoggerFactory.getLogger(SocketClient.class);
 
-	private final ServiceRegistry serviceDiscovery;
+	private final ServiceDiscovery serviceDiscovery;
 
 	private final CommonSerializer serializer;
 
 	public SocketClient(Integer serializer) {
-		this.serviceDiscovery = new ZkServiceRegistry();
+		this.serviceDiscovery = new ZKServiceDiscoveryImpl();
 		this.serializer = CommonSerializer.getByCode(serializer);
 	}
 

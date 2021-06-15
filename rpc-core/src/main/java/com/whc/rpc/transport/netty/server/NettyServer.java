@@ -1,5 +1,7 @@
 package com.whc.rpc.transport.netty.server;
 
+import com.whc.rpc.hook.CustomShutdownHook;
+import com.whc.rpc.registry.zk.ZKServiceRegistryImpl;
 import com.whc.rpc.transport.RpcServer;
 import com.whc.rpc.codec.CommonDecoder;
 import com.whc.rpc.codec.CommonEncoder;
@@ -33,6 +35,8 @@ public class NettyServer implements RpcServer {
 
 	private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
+	public static final int PORT = 9000;
+
 	private final String host;
 	private final int port;
 
@@ -50,7 +54,7 @@ public class NettyServer implements RpcServer {
 		this.host = host;
 		this.port = port;
 
-		serviceRegistry = new ZkServiceRegistry();
+		serviceRegistry = new ZKServiceRegistryImpl();
 		serviceProvider = new ServiceProviderImpl();
 		this.serializer = CommonSerializer.getByCode(serializer);
 	}
@@ -75,6 +79,7 @@ public class NettyServer implements RpcServer {
 
 	@Override
 	public void start() {
+		CustomShutdownHook.getCustomShutdownHook().clearAll();
 		// bossGroup 表示监听端口,accept新的连接请求
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		// workerGroup表示处理每一条连接的数据读写的线程组

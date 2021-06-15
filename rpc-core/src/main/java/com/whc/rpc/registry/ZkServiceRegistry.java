@@ -2,8 +2,8 @@ package com.whc.rpc.registry;
 
 import com.whc.rpc.enumeration.RpcError;
 import com.whc.rpc.exception.RpcException;
-import com.whc.rpc.loadbalancer.LoadBalancer;
-import com.whc.rpc.loadbalancer.RandomLoadBalance;
+import com.whc.rpc.loadbalance.LoadBalancer;
+import com.whc.rpc.loadbalance.loadbalancer.RandomLoadBalance;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -25,9 +25,9 @@ import java.util.List;
  * @Author: whc
  * @Date: 2021/06/09/22:34
  */
-public class ZkServiceRegistry implements ServiceRegistry{
+public class ZkServiceRegistry {
 
-	private static final Logger logger = LoggerFactory.getLogger(ZkServiceRegistry.class);
+	/*private static final Logger logger = LoggerFactory.getLogger(ZkServiceRegistry.class);
 
 	// curator提供的zookeeper客户端
 	private CuratorFramework client;
@@ -91,15 +91,6 @@ public class ZkServiceRegistry implements ServiceRegistry{
 			String rsNode = client.create().withMode(CreateMode.EPHEMERAL).forPath(path,"0".getBytes());
 			logger.error("服务注册成功："+rsNode);
 
-			/*// serviceName创建成永久节点,服务提供者下线时,不删服务名,只删地址
-			if(client.checkExists().forPath("/" + serviceName) == null) {
-				client.create().creatingParentContainersIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/" + serviceName, "127.0.0.1".getBytes());
-			}
-			// 路径地址,一个/代表一个节点
-			String path = "/" + serviceName + "/" + getServiceAddress(inetSocketAddress);
-
-			// 临时节点,服务器下线就删除节点
-			client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, "127.0.0.1".getBytes());*/
 		} catch (Exception e) {
 			logger.error("服务注册失败,此服务已存在");
 			throw new RpcException(RpcError.REGISTER_SERVICE_FAILED);
@@ -114,7 +105,7 @@ public class ZkServiceRegistry implements ServiceRegistry{
 		try {
 			repos = client.getChildren().forPath(path);
 
-			// 动态发现服务节点的变化(监听), 重新更新服务器列表
+			// 动态发现服务节点的变化(监听), 如果提供服务的服务端上下线,则重新更新服务器列表
 			registerWatcher(path);
 
 			// 负载均衡机制
@@ -160,5 +151,5 @@ public class ZkServiceRegistry implements ServiceRegistry{
 	private InetSocketAddress parseAddress(String address) {
 		String[] result = address.split(":");
 		return new InetSocketAddress(result[0], Integer.parseInt(result[1]));
-	}
+	}*/
 }

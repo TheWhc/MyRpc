@@ -1,6 +1,6 @@
 package com.whc.test;
 
-import com.whc.rpc.loadbalancer.RoundLoadBalance;
+import com.whc.rpc.loadbalance.loadbalancer.RoundLoadBalance;
 import com.whc.rpc.transport.RpcClient;
 import com.whc.rpc.transport.RpcClientProxy;
 import com.whc.rpc.api.Blog;

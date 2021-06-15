@@ -1,15 +1,15 @@
 package com.whc.rpc.transport.netty.client;
 
-import com.whc.rpc.loadbalancer.LoadBalancer;
-import com.whc.rpc.loadbalancer.RandomLoadBalance;
+import com.whc.rpc.loadbalance.LoadBalancer;
+import com.whc.rpc.loadbalance.loadbalancer.RandomLoadBalance;
+import com.whc.rpc.registry.ServiceDiscovery;
+import com.whc.rpc.registry.zk.ZKServiceDiscoveryImpl;
 import com.whc.rpc.transport.RpcClient;
 import com.whc.rpc.entity.RpcRequest;
 import com.whc.rpc.entity.RpcResponse;
 import com.whc.rpc.enumeration.RpcError;
 import com.whc.rpc.exception.RpcException;
 import com.whc.rpc.factory.SingletonFactory;
-import com.whc.rpc.registry.ServiceRegistry;
-import com.whc.rpc.registry.ZkServiceRegistry;
 import com.whc.rpc.serializer.CommonSerializer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * NIO方式消费者客户端类
@@ -43,7 +42,7 @@ public class NettyClient implements RpcClient {
 				.channel(NioSocketChannel.class);
 	}
 
-	private final ServiceRegistry serviceDiscovery;
+	private final ServiceDiscovery serviceDiscovery;
 	private final CommonSerializer serializer;
 	private final UnprocessedRequests unprocessedRequests;
 
@@ -62,7 +61,7 @@ public class NettyClient implements RpcClient {
 	public NettyClient(Integer serializer, LoadBalancer loadBalancer) {
 		// 初始化注册中心，建立连接
 		// 默认负载均衡为随机负载均衡
-		this.serviceDiscovery = new ZkServiceRegistry(loadBalancer);
+		this.serviceDiscovery = new ZKServiceDiscoveryImpl(loadBalancer);
 		this.serializer = CommonSerializer.getByCode(serializer);
 		this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
 	}
@@ -78,6 +77,7 @@ public class NettyClient implements RpcClient {
 
 		try {
 			InetSocketAddress inetSocketAddress = serviceDiscovery.serviceDiscovery(rpcRequest.getInterfaceName());
+
 			Channel channel = ChannelProvider.get(inetSocketAddress, serializer);
 
 			if (!channel.isActive()) {
